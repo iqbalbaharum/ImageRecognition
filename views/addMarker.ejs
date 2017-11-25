@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bookmark Admin</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <!-- <link rel="icon" type="image/x-icon" href="css/e_nDl_icon.ico"> -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <% include partial/nav %>
+
+    <main>
+
+      <div class="container">
+
+        <div class="section">
+          <form ref="uploadForm" id="uploadForm" action="/upload" method="post"
+          enctype="multipart/form-data">
+            <div class="file-field input-field">
+              <div class="btn">
+                <span>File</span>
+                <input type="file" name="uploadedFile">
+              </div>
+
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+
+              <!--  -->
+              <div class="input-field col s12">
+                <input id="action" name="action" type="text">
+                <label for="action">Action</label>
+              </div>
+
+              <button class="btn waves-effect waves-light" type="submit" name="upload">Upload
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script>
+
+    </script>
+</body>
+</html>
