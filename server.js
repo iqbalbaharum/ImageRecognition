@@ -19,7 +19,7 @@ app.use(fileUpload());
 // database folder
 const dbImages = fs.readdirSync('./database');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
 
 // database
 mongoose.Promise = global.Promise;
@@ -163,9 +163,6 @@ app.post('/find', function(req, res) {
     });
 
     if(mostAccurateFile) {
-
-      console.log("file: " + mostAccurateFile);
-
       Marker.findOne(
         {image: mostAccurateFile.file},
         function(err, marker) {
@@ -181,7 +178,9 @@ app.post('/find', function(req, res) {
     }
 
     // delete file
-    fs.unlink(targetPath);
+    fs.unlink(targetPath, function() {
+        // do nothing
+    });
 
   });
 });
