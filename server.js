@@ -149,13 +149,13 @@ app.post('/find', function(req, res) {
 
       if(mostAccurateFile) {
 
-        if(distanceAvg < mostAccurateFile.distance) {
+        if(distanceAvg <= mostAccurateFile.distance) {
           mostAccurateFile = {file: file, distance: distanceAvg};
         }
 
       } else {
 
-        if(distanceAvg < 50) {
+        if(distanceAvg < 40) {
           mostAccurateFile = {file: file, distance: distanceAvg};
         }
 
