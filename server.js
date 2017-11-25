@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 
 var Marker = require('./app/models/marker');
 
-var port = 3000;
+var port = 8080;
 
 var app = express();
 
