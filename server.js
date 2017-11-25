@@ -186,6 +186,6 @@ app.post('/find', function(req, res) {
   });
 });
 
-app.listen(3000, function() {
+app.listen(port, '35.187.227.160', function() {
   console.log('Listening');
 });
