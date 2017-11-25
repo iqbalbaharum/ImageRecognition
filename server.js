@@ -6,6 +6,7 @@ const cv = require('opencv4nodejs');
 const mime = require('mime-to-extensions');
 const fs = require('fs');
 const mongoose = require('mongoose');
+const opn = require('opn');
 
 var Marker = require('./app/models/marker');
 
@@ -110,22 +111,24 @@ app.post('/find', function(req, res) {
       return res.status(500).send(err);
     }
 
-    const cvImg = cv.imread(targetPath);
+    const cvImgBGR = cv.imread(targetPath);
+    const cvImg = cvImgBGR.bgrToGray();
 
     const detector = new cv.ORBDetector();
     const keyPoints = detector.detect(cvImg);
     const descriptors = detector.compute(cvImg, keyPoints);
 
-    const bestN = 40;
+    const bestN = 10;
 
-    console.log("Total images: " + dbImages.length);
+    // console.log("Total images: " + dbImages.length);
 
     var mostAccurateFile;
 
     // search db
     dbImages.forEach(file => {
 
-      const cvImg2 = cv.imread('./database/' + file);
+      const cvImg2BGR = cv.imread('./database/' + file);
+      const cvImg2 = cvImg2BGR.bgrToGray();
 
       const keyPoints2 = detector.detect(cvImg2);
       const descriptors2 = detector.compute(cvImg2, keyPoints2);
@@ -137,26 +140,33 @@ app.post('/find', function(req, res) {
       ).slice(0, bestN);
 
       // compare
+      var train = 0;
       var distance = 0;
+
+      var trainAvg = 0;
       var distanceAvg = 0;
       bestMatches.forEach(function(match) {
+          train += match.trainIdx;
           distance += match.distance;
       });
 
+      console.log(bestMatches);
+
+      trainAvg = train/bestMatches.length;
       distanceAvg = distance/bestMatches.length;
 
-      console.log(file + ": " + distanceAvg);
+      console.log(file + ": " + distanceAvg + "/" + trainAvg);
 
       if(mostAccurateFile) {
 
         if(distanceAvg < mostAccurateFile.distance) {
-          mostAccurateFile = {file: file, distance: distanceAvg};
+          mostAccurateFile = {file: file, distance: distanceAvg, train: trainAvg};
         }
 
       } else {
 
         if(distanceAvg < 50) {
-          mostAccurateFile = {file: file, distance: distanceAvg};
+          mostAccurateFile = {file: file, distance: distanceAvg, train: trainAvg};
         }
 
       }
@@ -169,7 +179,8 @@ app.post('/find', function(req, res) {
           if(err)
             res.send(err);
 
-          res.json(marker);
+          // res.json(marker);
+          opn(marker.action);
         }
       );
     } else {
